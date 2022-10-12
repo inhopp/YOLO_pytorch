@@ -9,7 +9,9 @@ def parse_args():
 
     # models
     parser.add_argument("--pretrained", type=bool, default=False)
-    parser.add_argument("--input_size", type=int, default=800)
+    parser.add_argument("--input_size", type=int, default=448) # recommand multiple of S
+    parser.add_argument("--S", type=int, default=7) # num of grid
+    parser.add_argument("--B", type=int, default=2) # num of bbox 
 
     # dataset
     parser.add_argument("--data_dir", type=str, default="./datasets/")

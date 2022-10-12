@@ -11,6 +11,9 @@ class Dataset(data.Dataset):
         self.data_name = opt.data_name
         self.img_size = opt.input_size
         self.transform = transform
+        self.S = opt.S
+        self.B = opt.B
+        self.C = opt.num_classes
 
         self.img_names = list()
         with open(os.path.join(self.data_dir, self.data_name, '{}.csv'.format(phase))) as f:
@@ -67,13 +70,46 @@ class Dataset(data.Dataset):
 
         for box in boxes:
             box = list(map(float, box))
-            bbox = [int(a*b) for a, b in zip(box, ratio_list)]
+            bbox = [a*b for a, b in zip(box, ratio_list)]
+
+            # change from (x_min, y_min, x_max, y_max) to (x, y, w, h) format
+            x = (bbox[0] + bbox[2])/2.0
+            y = (bbox[1] + bbox[3])/2.0
+            w = bbox[2] - bbox[0]
+            h = bbox[3] - bbox[1]
+            bbox = [x, y, w, h]
             resized_boxes.append(bbox)
 
-        resized_boxes = torch.tensor(resized_boxes, dtype=torch.float32)
-        labels = torch.tensor(labels, dtype=torch.int64)
+        output_matrix = torch.zeros((self.S, self.S, self.C + 5 * self.B))
+        index = 0
+        for box in resized_boxes:
+            x, y, w, h = box
+            cell_size = int(self.img_size / self.S)
+            class_label = labels[index]
+
+            # i, j represents the cell row and cell column
+            i = y // cell_size
+            j = x // cell_size
+            x_cell = float(x/cell_size) - j
+            y_cell = float(y/cell_size) - x
+            w_cell = w / self.img_size
+            h_cell = h / self.img_size
+
+            if output_matrix[i, j, self.C] == 0:
+                # Set that there exitsts an object
+                output_matrix[i, j, self.C + 5 * index] = 1
+
+                # Set box coordinates
+                box_coord = torch.tensor([x_cell, y_cell, w_cell, h_cell])
+                box_position = self.C + 1 + 5 * min(index, 2)
+                output_matrix[i, j, box_position : box_position + 4] = box_coord
+
+                # Set one-hot encoding for class_label
+                output_matrix[i, j, class_label] = 1
+
+            index += 1
         
-        return img, resized_boxes, labels
+        return img, output_matrix
 
 
     def __len__(self):
