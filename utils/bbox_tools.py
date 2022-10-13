@@ -67,7 +67,6 @@ def get_bboxes(opt, loader, model, iou_threshold, threshold):
 
             train_idx += 1
 
-    model.train()
     return all_pred_boxes, all_true_boxes
 
 
