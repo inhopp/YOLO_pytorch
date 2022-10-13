@@ -1,9 +1,7 @@
 import os
-from pickletools import optimize
 import torch
 import torch.optim
 import torch.nn as nn
-import torchvision.transforms.functional as f
 
 from tqdm import tqdm
 from data import generate_loader
@@ -32,7 +30,7 @@ class Solver():
 
         self.train_loader = generate_loader('train', opt)
         print("train set ready")
-        self.val_loader = generate_loader('val', opt)
+        self.val_loader = generate_loader('test', opt)
         print("validation set ready")
         self.best_mAP, self.best_epoch = 0, 0
 
