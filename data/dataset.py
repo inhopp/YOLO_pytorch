@@ -68,6 +68,7 @@ class Dataset(data.Dataset):
         ratio_list = [W_ratio, H_ratio, W_ratio, H_ratio]
         resized_boxes = []
 
+        index = 0
         for box in boxes:
             box = list(map(float, box))
             bbox = [a*b for a, b in zip(box, ratio_list)]
@@ -77,15 +78,16 @@ class Dataset(data.Dataset):
             y = (bbox[1] + bbox[3])/2.0
             w = bbox[2] - bbox[0]
             h = bbox[3] - bbox[1]
-            bbox = [x, y, w, h]
+
+            class_label = labels[index]
+            bbox = [class_label, x, y, w, h]
             resized_boxes.append(bbox)
+            index += 1
 
         output_matrix = torch.zeros((self.S, self.S, self.C + 5 * self.B))
-        index = 0
         for box in resized_boxes:
-            x, y, w, h = box
+            class_label, x, y, w, h = box
             cell_size = int(self.img_size / self.S)
-            class_label = labels[index]
 
             # i, j represents the cell row and cell column
             i = y // cell_size
@@ -97,17 +99,14 @@ class Dataset(data.Dataset):
 
             if output_matrix[i, j, self.C] == 0:
                 # Set that there exitsts an object
-                output_matrix[i, j, self.C + 5 * index] = 1
+                output_matrix[i, j, self.C] = 1
 
                 # Set box coordinates
                 box_coord = torch.tensor([x_cell, y_cell, w_cell, h_cell])
-                box_position = self.C + 1 + 5 * min(index, 2)
-                output_matrix[i, j, box_position : box_position + 4] = box_coord
+                output_matrix[i, j, self.C+1 : self.C+5] = box_coord
 
                 # Set one-hot encoding for class_label
                 output_matrix[i, j, class_label] = 1
-
-            index += 1
         
         return img, output_matrix
 
