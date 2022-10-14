@@ -29,13 +29,13 @@ class Yolov1(nn.Module):
         self.B = opt.B
         self.C = opt.num_classes
 
-        self.fc_layer = nn.Sequential(OrderedDict([
-            ('flatten', nn.Flatten()),
-            ('linear', nn.Linear(1024 * self.S * self.S, 4096)),
-            ('dropout', nn.Dropout(0.5)),
-            ('activation', nn.LeakyReLU(0.1)),
-            ('linear', nn.Linear(4096, self.S * self.S * (self.C + self.B * 5)))
-        ]))
+        self.fc_layer = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(1024 * self.S * self.S, 4096),
+            nn.Dropout(0.5),
+            nn.LeakyReLU(0.1),
+            nn.Linear(4096, self.S * self.S * (self.C + self.B * 5))
+        )
 
     def forward(self, x):
         out = self.darknet(x)

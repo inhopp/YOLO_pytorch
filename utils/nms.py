@@ -1,5 +1,5 @@
 import torch
-from IoU import IoU
+from utils.IoU import IoU
 
 def nms(bboxes, iou_threshold, class_threshold):
     # bboxes: list of lists containing all bboxes with each bboxes 

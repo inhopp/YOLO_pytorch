@@ -90,12 +90,16 @@ class Dataset(data.Dataset):
             cell_size = int(self.img_size / self.S)
 
             # i, j represents the cell row and cell column
-            i = y // cell_size
-            j = x // cell_size
+            i = int(y // cell_size)
+            j = int(x // cell_size)
             x_cell = float(x/cell_size) - j
-            y_cell = float(y/cell_size) - x
+            y_cell = float(y/cell_size) - i
             w_cell = w / self.img_size
             h_cell = h / self.img_size
+
+            if i > 6 :
+                ### something wrong (train/apple_61.jpg : i=19, j=20 )###
+                continue
 
             if output_matrix[i, j, self.C] == 0:
                 # Set that there exitsts an object

@@ -1,6 +1,6 @@
 from collections import Counter
 import torch
-from IoU import IoU
+from utils.IoU import IoU
 
 def mAP(pred_boxes, true_boxes, iou_threshold=0.5, num_classes=20):
     average_precisions = []

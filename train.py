@@ -13,6 +13,7 @@ from utils.mAP import mAP
 
 class Solver():
     def __init__(self, opt):
+        self.opt = opt
         self.dev = torch.device("cuda: {}".format(opt.gpu) if torch.cuda.is_available() else "cpu")
         print("device: ", self.dev)
 

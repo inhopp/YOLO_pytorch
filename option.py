@@ -24,8 +24,8 @@ def parse_args():
     parser.add_argument("--n_epoch", type=int, default=10)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--eval_epoch", type=int, default=1)
-    parser.add_argument("--batch_size", type=int, default=1)
-    parser.add_argument("--eval_batch_size", type=int, default=1)
+    parser.add_argument("--batch_size", type=int, default=16)
+    parser.add_argument("--eval_batch_size", type=int, default=8)
 
     # misc
     parser.add_argument("--ckpt_root", type=str, default="./FT_model")

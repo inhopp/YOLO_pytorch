@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from nms import nms
+from utils.nms import nms
 
 
 def plot_image(image, boxes):
