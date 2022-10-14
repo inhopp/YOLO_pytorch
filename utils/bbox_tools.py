@@ -53,10 +53,6 @@ def get_bboxes(opt, loader, model, iou_threshold, threshold):
         for idx in range(batch_size):
             nms_boxes = nms(bboxes[idx], iou_threshold=iou_threshold, class_threshold=threshold)
 
-            #if batch_idx == 0 and idx == 0:
-            #    plot_image(x[idx].permute(1,2,0).to("cpu"), nms_boxes)
-            #    print(nms_boxes)
-
             for nms_box in nms_boxes:
                 all_pred_boxes.append([train_idx] + nms_box)
 

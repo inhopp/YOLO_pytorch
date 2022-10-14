@@ -18,9 +18,8 @@ def parse_args():
     parser.add_argument("--data_name", type=str, default='fruits')
 
     # training setting
-    parser.add_argument("--lr", type=float, default=0.0005)
-    parser.add_argument("--lr_decay", type=float, default=0.9)
-    parser.add_argument("--weight_decay", type=float, default=0.0005)
+    parser.add_argument("--lr", type=float, default=2e-5)
+    parser.add_argument("--weight_decay", type=float, default=0)
     parser.add_argument("--n_epoch", type=int, default=10)
     parser.add_argument("--num_workers", type=int, default=4)
     parser.add_argument("--eval_epoch", type=int, default=1)

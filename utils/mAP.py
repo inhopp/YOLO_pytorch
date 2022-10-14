@@ -2,7 +2,7 @@ from collections import Counter
 import torch
 from utils.IoU import IoU
 
-def mAP(pred_boxes, true_boxes, iou_threshold=0.5, num_classes=20):
+def mAP(pred_boxes, true_boxes, iou_threshold=0.5, num_classes=3):
     average_precisions = []
 
     for c in range(num_classes):
@@ -59,7 +59,7 @@ def mAP(pred_boxes, true_boxes, iou_threshold=0.5, num_classes=20):
         precisions = torch.cat((torch.tensor([1]), precisions))
         recalls = torch.cat((torch.tensor([0]), recalls))
 
-        average_precisions.append(torch.trapz(precisions, recalls))
+        average_precisions.append(torch.trapz(precisions, recalls)) # area under graph
         mean_average_precision = sum(average_precisions) / len(average_precisions)
     
     return mean_average_precision
