@@ -31,7 +31,7 @@ def plot_image(image, boxes):
 
 
 def get_bboxes(opt, loader, model, iou_threshold, threshold):
-    device = torch.device("cuda: {}".format(opt.gpu) if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:{}".format(opt.gpu) if torch.cuda.is_available() else "cpu")
     all_pred_boxes = []
     all_true_boxes = []
 
