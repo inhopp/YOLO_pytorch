@@ -87,6 +87,7 @@ class Dataset(data.Dataset):
         output_matrix = torch.zeros((self.S, self.S, self.C + 5 * self.B))
         for box in resized_boxes:
             class_label, x, y, w, h = box
+            class_label = int(class_label)
             cell_size = int(self.img_size / self.S)
 
             # i, j represents the cell row and cell column
