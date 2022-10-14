@@ -56,7 +56,7 @@ def mAP(pred_boxes, true_boxes, iou_threshold=0.5, num_classes=20):
         FP_cumsum = torch.cumsum(FP, dim=0)
         recalls = TP_cumsum / (total_true_bboxes + 1e-6)
         precisions = torch.divide(TP_cumsum, (TP_cumsum + FP_cumsum + 1e-6))
-        precisions = torch.cat((torch.tensor[1]), precisions)
+        precisions = torch.cat((torch.tensor([1]), precisions))
         recalls = torch.cat((torch.tensor([0]), recalls))
 
         average_precisions.append(torch.trapz(precisions, recalls))
