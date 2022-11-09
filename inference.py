@@ -21,7 +21,7 @@ def inference(opt):
         img = img.to(dev)
         
         for idx in range(opt.eval_batch_size):
-            bboxes = cellboxes_to_boxes(model(img))
+            bboxes = cellboxes_to_boxes(model(img), opt)
             nms_bboxes = nms(bboxes[idx], iou_threshold=0.5, class_threshold=0.4)
             plot_image(img[idx].to("cpu"), nms_bboxes)
 
